@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sizzle & Spice | Premium Fine Dining</title>
+    <title>NOIR | Luxury Dining</title>
     
-    <!-- Google Fonts: Playfair Display for elegant headings, Poppins for clean body text -->
+    <!-- Google Fonts: Playfair Display for elegant headings, Outfit for modern body text -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,26 +21,24 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
+                        sans: ['Outfit', 'sans-serif'],
                         serif: ['Playfair Display', 'serif'],
                     },
                     colors: {
-                        // Premium Dark Theme Colors
-                        premiumGold: '#D4AF37', // Classic Gold
-                        premiumGoldDark: '#B5952F',
-                        premiumRed: '#8B1E1E', // Deep Crimson/Burgundy
-                        darkBg: '#050505', // Almost Black
-                        darkCard: '#111111', // Dark Gray for cards
-                        darkBorder: '#222222', // Subtle borders
+                        premiumGold: '#D4AF37', 
+                        lightGold: '#F3E5AB',
+                        darkBg: '#030303', // Deepest black
+                        darkCard: '#0a0a0a',
+                        darkBorder: '#1f1f1f',
                     },
                     animation: {
-                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
                     },
                     keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(30px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
                         }
                     }
                 }
@@ -49,430 +47,478 @@
     </script>
     
     <style>
-        /* Premium custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050505; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #222222; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #D4AF37; 
+        body {
+            background-color: #030303;
+            color: #e5e5e5;
+            cursor: none; /* Hide default cursor for custom cursor */
+            overflow-x: hidden;
         }
 
-        /* Hero Image Overlay Gradient - Darker for premium feel */
-        .hero-overlay {
-            background: linear-gradient(to right, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.7) 50%, rgba(5,5,5,0.4) 100%);
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #030303; }
+        ::-webkit-scrollbar-thumb { background: #1f1f1f; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background-color: #D4AF37;
+        }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        .cursor-hover {
+            width: 60px; height: 60px;
+            background-color: rgba(212, 175, 55, 0.1);
+            border-color: #D4AF37;
         }
 
-        /* Image hover zoom effect */
-        .img-zoom-container {
-            overflow: hidden;
-        }
-        .img-zoom {
-            transition: transform 0.7s ease;
-        }
-        .img-zoom-container:hover .img-zoom {
-            transform: scale(1.05);
+        /* Background glow effect */
+        .glow-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+            z-index: 0;
         }
 
-        /* Reveal on scroll base class */
+        /* Scroll Reveal Classes */
         .reveal {
             opacity: 0;
-            transform: translateY(40px);
+            transform: translateY(50px) scale(0.95);
             transition: all 1s cubic-bezier(0.5, 0, 0, 1);
         }
         .reveal.active {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
-        /* Elegant text selection */
-        ::selection {
-            background: #D4AF37;
-            color: #000;
+        /* Floating Label Form CSS */
+        .input-group { position: relative; margin-bottom: 2rem; }
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #333;
+            color: #fff;
+            padding: 10px 0;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
         }
+        .input-group label {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            color: #666;
+            font-size: 1rem;
+            pointer-events: none;
+            transition: 0.3s ease all;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+        }
+        .input-group input:focus, .input-group textarea:focus, .input-group select:focus {
+            border-bottom-color: #D4AF37;
+        }
+        .input-group input:focus ~ label, .input-group input:valid ~ label,
+        .input-group textarea:focus ~ label, .input-group textarea:valid ~ label,
+        .input-group select:focus ~ label, .input-group select:valid ~ label {
+            top: -15px;
+            font-size: 0.65rem;
+            color: #D4AF37;
+        }
+
+        /* Button Hover Fill Effect */
+        .btn-luxury {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .btn-luxury::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 0%;
+            background-color: #D4AF37;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+        .btn-luxury:hover::after { height: 100%; }
+        .btn-luxury:hover { color: #000; }
+
+        ::selection { background: #D4AF37; color: #000; }
     </style>
 </head>
-<body class="font-sans text-gray-300 bg-darkBg overflow-x-hidden selection:bg-premiumGold selection:text-black">
+<body class="font-sans antialiased">
 
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 bg-transparent py-6 border-b border-transparent">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center">
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center">
-                    <a href="#" class="font-serif text-3xl font-bold flex items-center gap-2 group tracking-wide">
-                        <i class="fas fa-fire text-premiumGold group-hover:text-white transition-colors duration-500"></i>
-                        <span class="text-white transition-colors duration-300">Sizzle <span class="text-premiumGold font-light italic">&</span> Spice</span>
-                    </a>
-                </div>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-10 items-center">
-                    <a href="#home" class="text-gray-300 hover:text-premiumGold font-medium transition-colors duration-300 uppercase tracking-widest text-xs">Home</a>
-                    <a href="#about" class="text-gray-300 hover:text-premiumGold font-medium transition-colors duration-300 uppercase tracking-widest text-xs">About</a>
-                    <a href="#menu" class="text-gray-300 hover:text-premiumGold font-medium transition-colors duration-300 uppercase tracking-widest text-xs">Menu</a>
-                    <a href="#reservation" class="border border-premiumGold text-premiumGold hover:bg-premiumGold hover:text-black px-8 py-2.5 rounded-none font-medium transition-all duration-500 uppercase tracking-widest text-xs">
-                        Reservation
-                    </a>
-                </div>
-                
-                <!-- Mobile menu button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-white hover:text-premiumGold focus:outline-none transition-colors">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                </div>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-700 bg-transparent py-8 mix-blend-difference">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="font-serif text-3xl md:text-4xl font-bold tracking-[0.2em] text-white hoverable">
+                NOIR<span class="text-premiumGold text-4xl">.</span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-12 items-center">
+                <a href="#about" class="text-white text-xs uppercase tracking-[0.2em] hoverable relative group">
+                    Story
+                    <span class="absolute -bottom-2 left-0 w-0 h-px bg-premiumGold transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#menu" class="text-white text-xs uppercase tracking-[0.2em] hoverable relative group">
+                    Menu
+                    <span class="absolute -bottom-2 left-0 w-0 h-px bg-premiumGold transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#reservation" class="text-white text-xs uppercase tracking-[0.2em] hoverable relative group">
+                    Reserve
+                    <span class="absolute -bottom-2 left-0 w-0 h-px bg-premiumGold transition-all duration-300 group-hover:w-full"></span>
+                </a>
             </div>
-        </div>
-        
-        <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-darkBg border-b border-darkBorder absolute w-full left-0 top-full transition-transform origin-top">
-            <div class="px-4 pt-4 pb-8 space-y-4 text-center">
-                <a href="#home" class="block px-3 py-3 text-sm tracking-widest uppercase font-medium text-gray-300 hover:text-premiumGold">Home</a>
-                <a href="#about" class="block px-3 py-3 text-sm tracking-widest uppercase font-medium text-gray-300 hover:text-premiumGold">About</a>
-                <a href="#menu" class="block px-3 py-3 text-sm tracking-widest uppercase font-medium text-gray-300 hover:text-premiumGold">Menu</a>
-                <a href="#reservation" class="inline-block mt-4 border border-premiumGold text-premiumGold px-8 py-3 font-medium uppercase tracking-widest text-sm w-full hover:bg-premiumGold hover:text-black transition-colors">Reservation</a>
-            </div>
+            
+            <!-- Mobile Menu Btn -->
+            <button class="md:hidden text-white hoverable">
+                <i class="fas fa-grip-lines text-2xl"></i>
+            </button>
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
-        <!-- Background Image -->
+        <!-- Parallax BG -->
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=2000&auto=format&fit=crop" alt="Premium Dining" class="w-full h-full object-cover object-center" />
-            <div class="absolute inset-0 hero-overlay"></div>
+            <img id="hero-img" src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=2000&auto=format&fit=crop" alt="Luxury Dining" class="w-full h-[120%] object-cover object-center -mt-10 opacity-60" />
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#030303]/80 to-[#030303]"></div>
         </div>
-        
-        <!-- Subtle gradient glow -->
-        <div class="absolute top-1/2 left-1/4 w-96 h-96 bg-premiumGold rounded-full mix-blend-overlay filter blur-[100px] opacity-10 animate-pulse-slow z-0"></div>
 
-        <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto mt-16">
-            <div class="flex items-center justify-center gap-4 mb-6 animate-fade-in-up" style="animation-delay: 0.1s;">
-                <div class="h-px w-12 bg-premiumGold"></div>
-                <span class="block text-premiumGold font-sans uppercase tracking-[0.3em] text-xs font-medium">A Symphony of Taste</span>
-                <div class="h-px w-12 bg-premiumGold"></div>
+        <div class="relative z-10 text-center px-4 w-full max-w-5xl">
+            <div class="overflow-hidden mb-4">
+                <span class="block text-premiumGold font-sans uppercase tracking-[0.4em] text-xs md:text-sm font-medium translate-y-10 animate-[fadeInUp_1s_ease_forwards] hoverable">
+                    An Ode to Culinary Art
+                </span>
             </div>
             
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif font-normal text-white leading-tight mb-8 animate-fade-in-up" style="animation-delay: 0.3s;">
-                The Art of <br>
-                <span class="font-style: italic text-premiumGold">Fine Dining</span>
+            <h1 class="text-6xl md:text-8xl lg:text-[10rem] font-serif text-white tracking-widest leading-none mb-8 opacity-0 animate-[fadeInUp_1.5s_ease_0.3s_forwards]">
+                NOIR
             </h1>
             
-            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 animate-fade-in-up font-light leading-relaxed" style="animation-delay: 0.5s;">
-                Immerse yourself in an unparalleled culinary journey where classic traditions meet modern elegance in a beautifully curated atmosphere.
-            </p>
-            
-            <div class="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up" style="animation-delay: 0.7s;">
-                <a href="#menu" class="px-10 py-4 bg-premiumGold text-black font-medium text-sm uppercase tracking-widest hover:bg-white transition-all duration-500">
-                    Discover Menu
-                </a>
-                <a href="#reservation" class="px-10 py-4 bg-transparent border border-gray-500 text-white font-medium text-sm uppercase tracking-widest hover:border-premiumGold hover:text-premiumGold transition-all duration-500">
-                    Book a Table
-                </a>
-            </div>
+            <div class="w-px h-24 bg-gradient-to-b from-premiumGold to-transparent mx-auto mt-8 opacity-0 animate-[fadeInUp_1.5s_ease_0.6s_forwards]"></div>
         </div>
         
-        <!-- Scroll indicator -->
-        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10">
-            <a href="#about" class="flex flex-col items-center text-gray-500 hover:text-premiumGold transition-colors duration-300">
-                <span class="text-xs uppercase tracking-widest mb-2">Scroll</span>
-                <div class="w-px h-12 bg-gradient-to-b from-gray-500 to-transparent"></div>
-            </a>
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+            <span class="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-2 block text-center">Scroll</span>
         </div>
     </section>
 
-    <section id="about" class="py-32 bg-darkBg relative border-t border-darkBorder">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Story Section -->
+    <section id="about" class="py-32 relative">
+        <div class="glow-circle w-[500px] h-[500px] top-0 left-[-200px]"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                <!-- Image Collage -->
-                <div class="relative reveal grid grid-cols-2 gap-4">
-                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format&fit=crop" alt="Restaurant Interior" class="w-full h-80 object-cover transform translate-y-12 grayscale hover:grayscale-0 transition-all duration-700">
-                    <img src="https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf?w=800&auto=format&fit=crop" alt="Chef Plating" class="w-full h-80 object-cover grayscale hover:grayscale-0 transition-all duration-700">
-                    
-                    <!-- Floating badge -->
-                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-darkBg p-6 border border-premiumGold flex flex-col items-center justify-center w-36 h-36">
-                        <span class="text-4xl font-serif text-premiumGold mb-1">15</span>
-                        <span class="text-[0.65rem] font-sans text-gray-400 text-center uppercase tracking-widest">Years of<br>Excellence</span>
+                <div class="reveal relative">
+                    <div class="absolute -left-10 -top-10 text-9xl text-[#111] font-serif z-0 select-none">"</div>
+                    <div class="relative z-10">
+                        <span class="text-premiumGold uppercase tracking-[0.2em] text-xs mb-6 block">The Concept</span>
+                        <h2 class="text-4xl md:text-5xl font-serif text-white mb-8 leading-snug">
+                            Where shadows play and flavors <span class="italic text-gray-500">illuminate.</span>
+                        </h2>
+                        <p class="text-gray-400 font-light leading-relaxed mb-6">
+                            NOIR is not just a restaurant; it is a theatrical performance of taste. Hidden in the heart of the city, we craft an enigmatic dining experience where modern techniques meet ancient foraging traditions.
+                        </p>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Signature_of_Gordon_Ramsay.svg/1200px-Signature_of_Gordon_Ramsay.svg.png" alt="Chef Signature" class="h-12 opacity-50 mt-8 filter invert">
                     </div>
                 </div>
-
-                <!-- Text Content -->
-                <div class="reveal lg:pl-10">
-                    <div class="flex items-center gap-4 mb-6">
-                        <span class="text-premiumGold uppercase tracking-[0.2em] text-xs font-medium">Our Heritage</span>
-                        <div class="w-12 h-px bg-premiumGold"></div>
-                    </div>
-                    <h2 class="text-4xl md:text-5xl font-serif text-white mb-8 leading-tight">
-                        Culinary perfection <br><span class="italic text-gray-400">in every detail.</span>
-                    </h2>
-                    <p class="text-gray-400 mb-8 text-base leading-relaxed font-light">
-                        At Sizzle & Spice, we embrace the philosophy that dining is an art form. Our executive chefs meticulously source the finest global ingredients to craft dishes that are both visually stunning and profoundly flavorful. 
-                    </p>
-                    <p class="text-gray-400 mb-10 text-base leading-relaxed font-light">
-                        Step into our world of subdued lighting, elegant jazz, and exceptional service, where every meal becomes a cherished memory.
-                    </p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8 border-t border-darkBorder pt-10">
-                        <div class="flex items-start gap-4">
-                            <div class="text-premiumGold text-2xl mt-1">
-                                <i class="fas fa-wine-glass-alt"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-serif text-white text-lg tracking-wide">Curated Cellar</h4>
-                                <p class="text-gray-500 text-sm mt-2 font-light">An extensive collection of world-class vintages.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="text-premiumGold text-2xl mt-1">
-                                <i class="fas fa-award"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-serif text-white text-lg tracking-wide">Award Winning</h4>
-                                <p class="text-gray-500 text-sm mt-2 font-light">Recognized globally for culinary excellence.</p>
-                            </div>
-                        </div>
-                    </div>
+                
+                <div class="reveal relative h-[600px] w-full animate-float">
+                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=1000&auto=format&fit=crop" alt="Premium Steak" class="absolute right-0 top-0 w-4/5 h-4/5 object-cover">
+                    <img src="https://images.unsplash.com/photo-1574966739987-65e386cdea07?q=80&w=800&auto=format&fit=crop" alt="Wine" class="absolute left-0 bottom-0 w-2/3 h-1/2 object-cover border-8 border-[#030303]">
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="menu" class="py-32 bg-[#0a0a0a] border-t border-darkBorder">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Section Header -->
-            <div class="text-center max-w-3xl mx-auto mb-20 reveal">
-                <span class="text-premiumGold uppercase tracking-[0.2em] text-xs font-medium mb-4 block">A La Carte</span>
-                <h2 class="text-4xl md:text-5xl font-serif text-white mb-6">Signature Selection</h2>
-                <div class="w-px h-12 bg-premiumGold mx-auto"></div>
+    <!-- Menu Section -->
+    <section id="menu" class="py-32 relative bg-[#060606]">
+        <div class="glow-circle w-[600px] h-[600px] bottom-0 right-[-200px]"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+            <div class="flex flex-col items-center mb-20 reveal">
+                <span class="text-premiumGold uppercase tracking-[0.3em] text-xs mb-4">Curated Collection</span>
+                <h2 class="text-4xl md:text-5xl font-serif text-white">The Anthology</h2>
             </div>
 
             <!-- Menu Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
-                <!-- Menu Item 1 -->
-                <div class="bg-darkCard border border-darkBorder group hover:border-premiumGold transition-all duration-500 reveal img-zoom-container">
-                    <div class="relative h-72 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1544025162-8111142125f3?w=800&auto=format&fit=crop" alt="Premium Wagyu" class="w-full h-full object-cover img-zoom opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                <!-- Item 1 -->
+                <div class="group reveal cursor-pointer hoverable">
+                    <div class="overflow-hidden mb-6 h-80 relative">
+                        <img src="https://images.unsplash.com/photo-1544025162-8111142125f3?w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0" alt="Wagyu">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500"></div>
                     </div>
-                    <div class="p-8 text-center relative">
-                        <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-darkBg border border-premiumGold text-premiumGold font-serif py-1.5 px-6 text-sm">
-                            $85.00
-                        </div>
-                        <h3 class="text-2xl font-serif text-white mb-3 mt-4 group-hover:text-premiumGold transition-colors">A5 Wagyu Ribeye</h3>
-                        <p class="text-gray-500 text-sm mb-0 font-light leading-relaxed">Truffle pomme purée, charred asparagus, and a rich bone marrow demi-glace.</p>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-xl font-serif text-white group-hover:text-premiumGold transition-colors">A5 Wagyu Reserve</h3>
+                        <span class="text-premiumGold font-sans">₹6,500</span>
                     </div>
+                    <p class="text-gray-500 text-sm font-light">Truffle pomme purée, charred asparagus, 48-hour bone marrow demi-glace.</p>
                 </div>
 
-                <!-- Menu Item 2 -->
-                <div class="bg-darkCard border border-darkBorder group hover:border-premiumGold transition-all duration-500 reveal img-zoom-container" style="transition-delay: 100ms;">
-                    <div class="relative h-72 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1626078302484-90a789218d6e?w=800&auto=format&fit=crop" alt="Seafood Scallops" class="w-full h-full object-cover img-zoom opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                <!-- Item 2 -->
+                <div class="group reveal cursor-pointer hoverable" style="transition-delay: 100ms;">
+                    <div class="overflow-hidden mb-6 h-80 relative">
+                        <img src="https://images.unsplash.com/photo-1626078302484-90a789218d6e?w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0" alt="Scallops">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500"></div>
                     </div>
-                    <div class="p-8 text-center relative">
-                        <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-darkBg border border-premiumGold text-premiumGold font-serif py-1.5 px-6 text-sm">
-                            $42.00
-                        </div>
-                        <h3 class="text-2xl font-serif text-white mb-3 mt-4 group-hover:text-premiumGold transition-colors">Pan-Seared Scallops</h3>
-                        <p class="text-gray-500 text-sm mb-0 font-light leading-relaxed">Cauliflower silk, crispy pancetta, caper raisin emulsion, and micro greens.</p>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-xl font-serif text-white group-hover:text-premiumGold transition-colors">Hokkaido Scallops</h3>
+                        <span class="text-premiumGold font-sans">₹3,200</span>
                     </div>
+                    <p class="text-gray-500 text-sm font-light">Cauliflower silk, crispy pancetta, caper raisin emulsion, gold leaf.</p>
                 </div>
 
-                <!-- Menu Item 3 -->
-                <div class="bg-darkCard border border-darkBorder group hover:border-premiumGold transition-all duration-500 reveal img-zoom-container" style="transition-delay: 200ms;">
-                    <div class="relative h-72 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&auto=format&fit=crop" alt="Truffle Pasta" class="w-full h-full object-cover img-zoom opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                <!-- Item 3 -->
+                <div class="group reveal cursor-pointer hoverable" style="transition-delay: 200ms;">
+                    <div class="overflow-hidden mb-6 h-80 relative">
+                        <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0" alt="Pasta">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500"></div>
                     </div>
-                    <div class="p-8 text-center relative">
-                        <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-darkBg border border-premiumGold text-premiumGold font-serif py-1.5 px-6 text-sm">
-                            $38.00
-                        </div>
-                        <h3 class="text-2xl font-serif text-white mb-3 mt-4 group-hover:text-premiumGold transition-colors">Black Truffle Linguine</h3>
-                        <p class="text-gray-500 text-sm mb-0 font-light leading-relaxed">Handmade pasta, aged parmesan cream, freshly shaved seasonal black truffles.</p>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-xl font-serif text-white group-hover:text-premiumGold transition-colors">Black Truffle Linguine</h3>
+                        <span class="text-premiumGold font-sans">₹2,800</span>
                     </div>
+                    <p class="text-gray-500 text-sm font-light">Hand-pulled pasta, aged parmigiano-reggiano, freshly shaved black truffles.</p>
                 </div>
             </div>
-
-            <div class="mt-20 text-center reveal">
-                <a href="#" class="inline-flex items-center gap-3 text-white uppercase tracking-[0.15em] text-sm hover:text-premiumGold transition-colors group">
-                    View Complete Menu 
-                    <span class="w-8 h-px bg-white group-hover:bg-premiumGold transition-colors"></span>
+            
+            <div class="text-center mt-20 reveal">
+                <a href="#" class="inline-block border border-gray-700 text-white px-10 py-4 text-xs uppercase tracking-[0.2em] btn-luxury hoverable">
+                    Explore Full Menu
                 </a>
             </div>
         </div>
     </section>
 
-    <section id="reservation" class="py-32 relative border-t border-darkBorder">
-        <!-- Abstract dark background pattern -->
-        <div class="absolute inset-0 z-0 opacity-20">
-            <div class="absolute w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-800 via-darkBg to-darkBg"></div>
-        </div>
-
-        <div class="relative z-10 max-w-4xl mx-auto px-4 text-center reveal">
-            <span class="text-premiumGold uppercase tracking-[0.2em] text-xs font-medium mb-4 block">Experience</span>
-            <h2 class="text-4xl md:text-5xl font-serif text-white mb-6">Reserve Your Table</h2>
-            <p class="text-gray-400 text-base font-light mb-12 max-w-2xl mx-auto">
-                Join us for an evening of gastronomic brilliance. We highly recommend booking in advance to secure your preferred dining time.
-            </p>
+    <!-- Reservation Section -->
+    <section id="reservation" class="py-32 relative border-t border-[#111]">
+        <div class="max-w-4xl mx-auto px-6 lg:px-12 text-center reveal">
+            <h2 class="text-4xl md:text-5xl font-serif text-white mb-4">Secure Your Table</h2>
+            <p class="text-gray-500 mb-16 text-sm font-light">An exclusive experience awaits. Bookings open 30 days in advance.</p>
             
-            <!-- Premium Form -->
-            <form class="bg-darkCard border border-darkBorder p-8 md:p-10 max-w-3xl mx-auto shadow-2xl">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div class="text-left">
-                        <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Date</label>
-                        <input type="date" class="w-full bg-darkBg border border-darkBorder text-gray-300 px-4 py-3 focus:border-premiumGold outline-none transition-colors custom-date-input">
+            <!-- Impressive HTML Form -->
+            <form id="reserveForm" class="bg-[#080808] border border-[#1a1a1a] p-10 md:p-14 text-left shadow-[0_0_50px_rgba(0,0,0,0.8)] relative overflow-hidden">
+                <!-- Decorative corner accents -->
+                <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-premiumGold/30"></div>
+                <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-premiumGold/30"></div>
+                <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-premiumGold/30"></div>
+                <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-premiumGold/30"></div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+                    <!-- Floating Label Inputs -->
+                    <div class="input-group">
+                        <input type="text" id="name" required class="hoverable">
+                        <label for="name">Full Name</label>
                     </div>
-                    <div class="text-left">
-                        <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Time</label>
-                        <select class="w-full bg-darkBg border border-darkBorder text-gray-300 px-4 py-3 focus:border-premiumGold outline-none transition-colors appearance-none">
-                            <option>18:00</option>
-                            <option>19:00</option>
-                            <option>20:00</option>
-                            <option>21:00</option>
+                    <div class="input-group">
+                        <input type="tel" id="phone" required class="hoverable">
+                        <label for="phone">Phone Number</label>
+                    </div>
+                    
+                    <div class="input-group">
+                        <!-- Custom Date Input -->
+                        <input type="date" id="date" required class="hoverable custom-date" style="color: transparent; text-shadow: 0 0 0 #fff;">
+                        <label for="date" class="-top-[15px] !text-[0.65rem] !color-premiumGold">Date</label>
+                    </div>
+                    
+                    <div class="input-group">
+                        <select id="guests" required class="hoverable appearance-none cursor-pointer">
+                            <option value="" disabled selected></option>
+                            <option value="2" class="bg-[#080808] text-white">2 Guests</option>
+                            <option value="3" class="bg-[#080808] text-white">3 Guests</option>
+                            <option value="4" class="bg-[#080808] text-white">4 Guests</option>
+                            <option value="5" class="bg-[#080808] text-white">Private Dining (5+)</option>
                         </select>
+                        <label for="guests">Number of Guests</label>
+                        <i class="fas fa-chevron-down absolute right-0 top-3 text-gray-600 text-sm pointer-events-none"></i>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                    <div class="text-left">
-                        <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Guests</label>
-                        <select class="w-full bg-darkBg border border-darkBorder text-gray-300 px-4 py-3 focus:border-premiumGold outline-none transition-colors appearance-none">
-                            <option>2 Guests</option>
-                            <option>3 Guests</option>
-                            <option>4 Guests</option>
-                            <option>5+ Guests</option>
-                        </select>
-                    </div>
-                    <div class="text-left">
-                        <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Special Request</label>
-                        <input type="text" placeholder="Anniversary, Allergy..." class="w-full bg-darkBg border border-darkBorder text-gray-300 px-4 py-3 focus:border-premiumGold outline-none transition-colors">
-                    </div>
+
+                <div class="input-group mt-4">
+                    <textarea id="requests" rows="1" class="hoverable resize-none" required></textarea>
+                    <label for="requests">Special Requests / Allergies</label>
                 </div>
-                <button type="button" class="w-full bg-premiumGold hover:bg-white text-black font-medium uppercase tracking-[0.2em] text-sm py-4 transition-all duration-500">
-                    Confirm Reservation
+
+                <button type="submit" id="submitBtn" class="w-full mt-8 bg-white text-black py-4 text-xs font-semibold uppercase tracking-[0.3em] hover:bg-premiumGold transition-colors duration-500 hoverable flex justify-center items-center gap-3">
+                    <span id="btnText">Request Reservation</span>
+                    <i id="btnIcon" class="fas fa-arrow-right"></i>
                 </button>
             </form>
         </div>
-        
-        <style>
-            /* Customizing date input icon for dark theme */
-            ::-webkit-calendar-picker-indicator {
-                filter: invert(1) opacity(0.6);
-            }
-        </style>
     </section>
 
-    <footer class="bg-darkBg pt-24 pb-12 border-t border-darkBorder">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20 reveal">
-                <!-- Brand -->
-                <div>
-                    <a href="#" class="font-serif text-2xl font-bold flex items-center gap-2 mb-6 tracking-wide">
-                        <span class="text-white">Sizzle <span class="text-premiumGold font-light italic">&</span> Spice</span>
-                    </a>
-                    <p class="text-gray-500 mb-8 font-light text-sm leading-relaxed">
-                        A sanctuary of taste where classic culinary techniques meet contemporary elegance. Redefining fine dining for the modern connoisseur.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 border border-darkBorder flex items-center justify-center text-gray-400 hover:border-premiumGold hover:text-premiumGold transition-all duration-300">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 border border-darkBorder flex items-center justify-center text-gray-400 hover:border-premiumGold hover:text-premiumGold transition-all duration-300">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Quick Links -->
-                <div>
-                    <h4 class="text-white font-sans font-medium uppercase tracking-widest text-xs mb-8">Navigation</h4>
-                    <ul class="space-y-4 font-light text-sm">
-                        <li><a href="#home" class="text-gray-500 hover:text-white transition-colors">Home</a></li>
-                        <li><a href="#about" class="text-gray-500 hover:text-white transition-colors">About</a></li>
-                        <li><a href="#menu" class="text-gray-500 hover:text-white transition-colors">Menu</a></li>
-                        <li><a href="#reservation" class="text-gray-500 hover:text-white transition-colors">Reservation</a></li>
-                    </ul>
-                </div>
-
-                <!-- Contact Info -->
-                <div>
-                    <h4 class="text-white font-sans font-medium uppercase tracking-widest text-xs mb-8">Contact</h4>
-                    <ul class="space-y-4 font-light text-sm text-gray-500">
-                        <li>123 Elite Avenue, Gold District<br>Kerala, India 695001</li>
-                        <li><a href="tel:+919876543210" class="hover:text-premiumGold transition-colors">+91 98765 43210</a></li>
-                        <li><a href="mailto:reservations@sizzlespice.com" class="hover:text-premiumGold transition-colors">reservations@sizzlespice.com</a></li>
-                    </ul>
-                </div>
-
-                <!-- Opening Hours -->
-                <div>
-                    <h4 class="text-white font-sans font-medium uppercase tracking-widest text-xs mb-8">Hours</h4>
-                    <ul class="space-y-4 font-light text-sm">
-                        <li class="flex justify-between text-gray-500">
-                            <span>Mon - Thu</span>
-                            <span>17:00 - 23:00</span>
-                        </li>
-                        <li class="flex justify-between text-gray-500">
-                            <span>Fri - Sat</span>
-                            <span>17:00 - 00:00</span>
-                        </li>
-                        <li class="flex justify-between text-gray-500">
-                            <span>Sunday</span>
-                            <span class="text-premiumGold">Closed</span>
-                        </li>
-                    </ul>
+    <!-- Footer -->
+    <footer class="bg-[#020202] pt-24 pb-12 border-t border-[#111]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-16 reveal">
+                <a href="#" class="font-serif text-3xl font-bold tracking-[0.2em] text-white mb-8 md:mb-0 hoverable">
+                    NOIR<span class="text-premiumGold">.</span>
+                </a>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-premiumGold transition-colors hoverable text-xl"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-premiumGold transition-colors hoverable text-xl"><i class="fab fa-twitter"></i></a>
                 </div>
             </div>
-
-            <!-- Bottom Footer -->
-            <div class="border-t border-darkBorder pt-8 flex flex-col md:flex-row justify-between items-center text-xs tracking-widest uppercase font-light text-gray-600 reveal">
-                <p>&copy; 2026 Sizzle & Spice. All Rights Reserved.</p>
-                <p class="mt-4 md:mt-0">Designed for <span class="text-premiumGold">Excellence</span></p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left border-t border-[#111] pt-12 reveal">
+                <div>
+                    <h4 class="text-premiumGold text-[10px] uppercase tracking-[0.2em] mb-4">Location</h4>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed">
+                        The Apex Tower, Level 42<br>
+                        Kowdiar Avenue, Trivandrum<br>
+                        Kerala, India 695003
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-premiumGold text-[10px] uppercase tracking-[0.2em] mb-4">Contact</h4>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed">
+                        <a href="tel:+918000000000" class="hover:text-white transition-colors hoverable">+91 8000 000 000</a><br>
+                        <a href="mailto:dine@noir.com" class="hover:text-white transition-colors hoverable">dine@noir.com</a>
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-premiumGold text-[10px] uppercase tracking-[0.2em] mb-4">Hours</h4>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed">
+                        Wed - Sun: 19:00 - 23:30<br>
+                        By Reservation Only
+                    </p>
+                </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // Mobile Menu Toggle
-        const btn = document.getElementById('mobile-menu-btn');
-        const menu = document.getElementById('mobile-menu');
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const hoverables = document.querySelectorAll('.hoverable');
 
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            // Add a slight delay for the outline for a smooth trailing effect
+            setTimeout(() => {
+                cursorOutline.style.left = `${posX}px`;
+                cursorOutline.style.top = `${posY}px`;
+            }, 50);
         });
 
-        // Navbar Scroll Effect (Premium Dark Theme)
-        const navbar = document.getElementById('navbar');
-        
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.classList.add('cursor-hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.classList.remove('cursor-hover');
+            });
+        });
+
+        // Parallax Effect for Hero Image
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.remove('bg-transparent', 'py-6', 'border-transparent');
-                navbar.classList.add('bg-darkBg', 'py-4', 'border-darkBorder', 'shadow-2xl');
-            } else {
-                navbar.classList.add('bg-transparent', 'py-6', 'border-transparent');
-                navbar.classList.remove('bg-darkBg', 'py-4', 'border-darkBorder', 'shadow-2xl');
+            const scroll = window.scrollY;
+            const heroImg = document.getElementById('hero-img');
+            if (scroll < window.innerHeight) {
+                heroImg.style.transform = `translateY(${scroll * 0.4}px)`;
             }
         });
 
-        // Scroll Reveal Animation Function
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 100; // Trigger earlier for smoother feel
-                
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
+        // Scroll Reveal Animation (Intersection Observer - highly performant)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Only animate once
                 }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Fix for Date Input text color issue in dark mode
+        const dateInput = document.getElementById('date');
+        dateInput.addEventListener('change', function() {
+            if(this.value) {
+                this.style.color = '#fff';
+                this.style.textShadow = 'none';
+            } else {
+                this.style.color = 'transparent';
+                this.style.textShadow = '0 0 0 #fff';
             }
-        }
-        window.addEventListener("scroll", reveal);
-        // Trigger once on load
-        reveal();
+        });
+
+        // Form Submit Animation Simulation
+        const form = document.getElementById('reserveForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnIcon = document.getElementById('btnIcon');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent actual form submission
+            
+            // Loading state
+            btnText.textContent = "Processing...";
+            btnIcon.className = "fas fa-circle-notch fa-spin";
+            submitBtn.classList.add('pointer-events-none', 'opacity-80');
+
+            // Simulate API call delay
+            setTimeout(() => {
+                // Success state
+                btnText.textContent = "Request Sent";
+                btnIcon.className = "fas fa-check";
+                submitBtn.classList.remove('bg-white', 'text-black', 'hover:bg-premiumGold');
+                submitBtn.classList.add('bg-green-600', 'text-white');
+                
+                form.reset();
+                dateInput.style.color = 'transparent';
+                dateInput.style.textShadow = '0 0 0 #fff';
+
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    btnText.textContent = "Request Reservation";
+                    btnIcon.className = "fas fa-arrow-right";
+                    submitBtn.classList.remove('bg-green-600', 'text-white', 'pointer-events-none', 'opacity-80');
+                    submitBtn.classList.add('bg-white', 'text-black', 'hover:bg-premiumGold');
+                }, 3000);
+
+            }, 2000);
+        });
     </script>
 </body>
 </html>
